@@ -28,7 +28,7 @@ def main():
     # 1. 创建套接字
     tcp_server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     # 2. 绑定
-    tcp_server_socket.bind(("192.168.31.79", 7897))
+    tcp_server_socket.bind(("", 7897))
     # 3. 设置为监听
     tcp_server_socket.listen(128)
 
