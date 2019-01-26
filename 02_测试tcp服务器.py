@@ -1,13 +1,29 @@
 import socket
+import re
 
 
 def client_serve(new_socket: socket.socket):
     rcv_content = new_socket.recv(1024)
     print(rcv_content)
+    page = re.match(r"GET /\w+.html", rcv_content.decode("utf-8"))
+    global page_local
+    try:
+        print(page)
+        page_name = page.group()
+        print(page_name)
+        page_final = page_name.replace("GET /", "")
+        print(page_final)
+        page_local = "./html/" + page_final
+    except AttributeError:
+        pass
+    fp = open(page_local, "rb")
+    page_content = fp.read()
+    fp.close()
+    print(page_content)
 
     send_content = "HTTP/1.1 200 OK\r\n"
     send_content += "\r\n"
-    send_content += "<h1>hah....ahah</h1>"
+    send_content += page_content.decode("utf-8")
     new_socket.send(send_content.encode("utf-8"))
     new_socket.close()
 
