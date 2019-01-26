@@ -7,7 +7,7 @@ def client_serve(new_socket: socket.socket):
 
     send_content = "HTTP/1.1 200 OK\r\n"
     send_content += "\r\n"
-    send_content += " hahahah "
+    send_content += "<h1>hah....ahah</h1>"
     new_socket.send(send_content.encode("utf-8"))
     new_socket.close()
 
@@ -17,7 +17,7 @@ def main():
     tcp_server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     tcp_server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     # tcp_server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1)
-    tcp_server_socket.bind(("", 7891))
+    tcp_server_socket.bind(("", 7897))
     # 3. 设置为监听状态
     tcp_server_socket.listen(128)
     # 4. 为这个用户服务

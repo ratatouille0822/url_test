@@ -2,25 +2,13 @@ import socket
 
 
 def serve_client(new_socket: socket.socket):
-    """
-    为这个客户端返回数据
-    """
-
-    # 1. 接受浏览器的请求
-    # /GET / HTTP1.1
-    request = new_socket.recv(128)
+    request = new_socket.recv(1024)
     print(request)
 
-    # 2. 返回http格式的数据
-    # 2.1 准备给浏览器的数据 header
     responce = "HTTP/1.1 200 OK\r\n"
     responce += "\r\n"
-
-    # 2.2 准备给浏览器的数据 body
-    responce += "<h2>hahahahaha</h2>"
-    print(responce)
+    responce += "<h1>hahahahaha</h1>"
     new_socket.send(responce.encode("utf-8"))
-    print("---sent---")
     new_socket.close()
 
 
