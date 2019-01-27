@@ -3,28 +3,28 @@ import re
 
 
 def client_serve(new_socket: socket.socket):
-    rcv_content = new_socket.recv(1024)
-    print(rcv_content)
-    page = re.match(r"GET /\w+.html", rcv_content.decode("utf-8"))
-    global page_local
+    print("=" * 50)
+    rcv_content = new_socket.recv(1024).decode("utf-8")
+    rcv_lines = rcv_content.splitlines()
+    print(rcv_lines)
+    # page = re.match(r"\s(\w+)(/(\w)+-(\w)+)*\.(\w){1,10}", rcv_lines[0]).group()
+    page = re.match(r"[^/]+(/[^ ]*)", rcv_lines[0]).group(1)
+    file_name = "./html" + page
+    print(file_name)
     try:
-        print(page)
-        page_name = page.group()
-        print(page_name)
-        page_final = page_name.replace("GET /", "")
-        print(page_final)
-        page_local = "./html/" + page_final
-    except AttributeError:
-        pass
-    fp = open(page_local, "rb")
-    page_content = fp.read()
-    fp.close()
-    print(page_content)
-
-    send_content = "HTTP/1.1 200 OK\r\n"
-    send_content += "\r\n"
-    send_content += page_content.decode("utf-8")
-    new_socket.send(send_content.encode("utf-8"))
+        fp = open(file_name, "rb")
+    except:
+        send_content = "HTTP/1.1 200 OK\r\n"
+        send_content += "\r\n"
+        send_content += "----file not found----"
+        new_socket.send(send_content.encode("utf-8"))
+    else:
+        html_content = fp.read()
+        fp.close()
+        send_content = "HTTP/1.1 200 OK\r\n"
+        send_content += "\r\n"
+        new_socket.send(send_content.encode("utf-8"))
+        new_socket.send(html_content)
     new_socket.close()
 
 
