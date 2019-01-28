@@ -3,12 +3,15 @@ import re
 
 
 def client_serve(new_socket: socket.socket):
+
     print("=" * 50)
     rcv_content = new_socket.recv(1024).decode("utf-8")
     rcv_lines = rcv_content.splitlines()
     print(rcv_lines)
     # page = re.match(r"\s(\w+)(/(\w)+-(\w)+)*\.(\w){1,10}", rcv_lines[0]).group()
     page = re.match(r"[^/]+(/[^ ]*)", rcv_lines[0]).group(1)
+    if page == "/":
+        page = "/index.html"
     file_name = "./html" + page
     print(file_name)
     try:
