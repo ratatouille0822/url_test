@@ -1,6 +1,10 @@
 import socket
 import re
-import threading
+import gevent
+from gevent import  monkey
+
+
+monkey.patch_all()
 
 
 def client_serve(new_socket: socket.socket):
@@ -42,10 +46,7 @@ def main():
     # 4. 为这个用户服务
     while True:
         new_socket, addr_info = tcp_server_socket.accept()
-
-        p1 = threading.Thread(target=client_serve, args=(new_socket, ))
-        p1.start()
-        # Threadnew_socket.close()
+        gevent.spawn(client_serve, new_socket)
 
 
 if __name__ == "__main__":
