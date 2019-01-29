@@ -1,6 +1,6 @@
 import socket
 import re
-import multiprocessing
+import threading
 
 
 def client_serve(new_socket: socket.socket):
@@ -43,9 +43,9 @@ def main():
     while True:
         new_socket, addr_info = tcp_server_socket.accept()
 
-        p1 = multiprocessing.Process(target=client_serve, args=(new_socket, ))
+        p1 = threading.Thread(target=client_serve, args=(new_socket, ))
         p1.start()
-        new_socket.close()
+        # new_socket.close()
 
 
 if __name__ == "__main__":
